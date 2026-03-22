@@ -1,0 +1,255 @@
+import React, { useState } from 'react';
+import { 
+  Clock, 
+  Zap, 
+  Database, 
+  Layers, 
+  Globe, 
+  Activity, 
+  AlertTriangle, 
+  TrendingDown, 
+  ArrowRight,
+  ChevronRight,
+  BarChart3,
+  Box
+} from 'lucide-react';
+
+const App = () => {
+  const [activeTab, setActiveTab] = useState('clocks');
+
+  const clocks = [
+    {
+      id: 'fast',
+      title: 'Fast Clock',
+      duration: 'Quarters',
+      items: ['AWS Capex Cadence', 'Enterprise SSD Tightness', 'Transformer Lead Times', 'Spot Pricing Cycles'],
+      color: 'text-orange-500',
+      bg: 'bg-orange-50',
+      border: 'border-orange-200'
+    },
+    {
+      id: 'medium',
+      title: 'Medium Clock',
+      duration: '1–5 Years',
+      items: ['U.S. Electricity Share Rise', 'Global Capacity Doubling', 'Utility Rule Rewrites (TX/OH)', 'Regional Grid Expansion'],
+      color: 'text-blue-500',
+      bg: 'bg-blue-50',
+      border: 'border-blue-200'
+    },
+    {
+      id: 'slow',
+      title: 'Slow Clock',
+      duration: '5–20 Years',
+      items: ['Firm Power Mix (Nuclear/Gas)', 'Hardware Refresh Waves', 'Policy Regimes (Japan vs EU)', 'Grid Buildout Completion'],
+      color: 'text-purple-500',
+      bg: 'bg-purple-50',
+      border: 'border-purple-200'
+    }
+  ];
+
+  const buildOrder = [
+    { stage: 'Civil + Structure', items: 'Concrete, Steel, Land', icon: <Box className="w-4 h-4" /> },
+    { stage: 'Power Delivery', items: 'Substations, Transformers, Cabling', icon: <Zap className="w-4 h-4" /> },
+    { stage: 'Cooling/Thermal', items: 'Chillers, Liquid Cooling, Pumps', icon: <Activity className="w-4 h-4" /> },
+    { stage: 'Racks + PDU', items: 'Busways, UPS, Distribution', icon: <Layers className="w-4 h-4" /> },
+    { stage: 'Compute + Storage', items: 'GPUs, HBM, SSDs, CPUs', icon: <Database className="w-4 h-4" /> }
+  ];
+
+  const commodityMatrix = [
+    { name: 'Copper/Alu', category: 'High Mass / High Signal', impact: 'Grid & Cooling', status: 'Primary Proxy' },
+    { name: 'Silicon', category: 'Foundation', impact: 'Semiconductors', status: 'High Centrality' },
+    { name: 'Tin/Tantalum', category: 'Fragile Supply', impact: 'Circuitry & Boards', status: 'Import Reliant' },
+    { name: 'Gallium/Indium', category: 'Geopolitical Risk', impact: 'Specialty Chips', status: 'Refining Bottleneck' },
+    { name: 'Uranium/Gas', category: 'Firm Power', impact: 'Dispatchable Supply', status: 'Baseload Demand' }
+  ];
+
+  const StatCard = ({ label, value, sub, trend }) => (
+    <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+      <div className="text-slate-500 text-sm font-medium">{label}</div>
+      <div className="text-2xl font-bold text-slate-900 mt-1">{value}</div>
+      <div className="flex items-center mt-2 text-xs">
+        <span className={trend === 'up' ? 'text-emerald-600' : 'text-slate-500'}>{sub}</span>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-slate-50 p-6 md:p-10 font-sans text-slate-900">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
+            AI Infrastructure & Commodity Intelligence
+          </h1>
+          <p className="text-slate-500 mt-2 text-lg">
+            Mapping physical constraints, layered clocks, and resource bottlenecks (2024–2030).
+          </p>
+        </div>
+
+        {/* Top Stats - Projections Mapping */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <StatCard label="U.S. DC Energy Use" value="325–580 TWh" sub="By 2028 (up from 176 TWh)" trend="up" />
+          <StatCard label="Global DC Capacity" value="200 GW" sub="Doubling by 2030" trend="up" />
+          <StatCard label="AWS 2025 Capex" value="$128.3B" sub="Up from $77.7B in 2024" trend="up" />
+          <StatCard label="Storage Index" value="-22%/yr" sub="Long-run cost-per-bit trend" trend="down" />
+        </div>
+
+        {/* Tabs */}
+        <div className="flex space-x-1 bg-slate-200 p-1 rounded-lg mb-8 w-fit">
+          <button 
+            onClick={() => setActiveTab('clocks')}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'clocks' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-600 hover:text-slate-900'}`}
+          >
+            Layered Clocks
+          </button>
+          <button 
+            onClick={() => setActiveTab('commodities')}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'commodities' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-600 hover:text-slate-900'}`}
+          >
+            Commodity Matrix
+          </button>
+          <button 
+            onClick={() => setActiveTab('strategy')}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'strategy' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-600 hover:text-slate-900'}`}
+          >
+            Build Logic
+          </button>
+        </div>
+
+        {/* Content Area */}
+        {activeTab === 'clocks' && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in fade-in duration-500">
+            {clocks.map((clock) => (
+              <div key={clock.id} className={`p-6 rounded-2xl border ${clock.border} ${clock.bg} shadow-sm`}>
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className={`p-2 rounded-lg bg-white border ${clock.border}`}>
+                    <Clock className={`w-5 h-5 ${clock.color}`} />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg">{clock.title}</h3>
+                    <p className="text-sm opacity-70">{clock.duration}</p>
+                  </div>
+                </div>
+                <ul className="space-y-3">
+                  {clock.items.map((item, idx) => (
+                    <li key={idx} className="flex items-start space-x-2 text-sm text-slate-700">
+                      <ChevronRight className="w-4 h-4 mt-0.5 text-slate-400 shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'commodities' && (
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden animate-in fade-in duration-500">
+            <div className="p-6 border-b border-slate-100 flex justify-between items-center">
+              <h3 className="font-bold text-lg flex items-center">
+                <Box className="w-5 h-5 mr-2 text-indigo-500" />
+                Commodity Exposure Pathway
+              </h3>
+              <div className="text-xs bg-indigo-50 text-indigo-700 px-2 py-1 rounded font-mono">USGS Infographic Source Mapping</div>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
+                  <tr>
+                    <th className="px-6 py-4 font-semibold">Mineral / Material</th>
+                    <th className="px-6 py-4 font-semibold">Market Category</th>
+                    <th className="px-6 py-4 font-semibold">Primary Impact</th>
+                    <th className="px-6 py-4 font-semibold">Strategic Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {commodityMatrix.map((comm, idx) => (
+                    <tr key={idx} className="hover:bg-slate-50 transition-colors">
+                      <td className="px-6 py-4 font-bold text-slate-900">{comm.name}</td>
+                      <td className="px-6 py-4 text-sm text-slate-600">{comm.category}</td>
+                      <td className="px-6 py-4 text-sm text-slate-600">{comm.impact}</td>
+                      <td className="px-6 py-4">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
+                          {comm.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'strategy' && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in duration-500">
+            {/* Build Chronology */}
+            <div className="space-y-4">
+              <h3 className="font-bold text-lg flex items-center mb-6">
+                <Layers className="w-5 h-5 mr-2 text-emerald-500" />
+                Physical Build Chronology
+              </h3>
+              <div className="relative pl-4 space-y-8 before:content-[''] before:absolute before:left-6 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
+                {buildOrder.map((step, idx) => (
+                  <div key={idx} className="relative flex items-start space-x-6">
+                    <div className="relative z-10 flex items-center justify-center w-4 h-4 mt-1 bg-white border-2 border-emerald-500 rounded-full">
+                    </div>
+                    <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-emerald-600 uppercase">Stage 0{idx + 1}</span>
+                        {step.icon}
+                      </div>
+                      <h4 className="font-bold text-slate-900 mt-1">{step.stage}</h4>
+                      <p className="text-sm text-slate-500 mt-1">{step.items}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Strategic Watchlist */}
+            <div className="bg-slate-900 text-white rounded-2xl p-8 shadow-xl">
+              <h3 className="text-xl font-bold mb-6 flex items-center">
+                <AlertTriangle className="w-6 h-6 mr-2 text-amber-400" />
+                Constraint Watchlist (2026 Focus)
+              </h3>
+              <div className="space-y-6">
+                <div className="border-l-2 border-amber-400 pl-4">
+                  <h4 className="font-bold text-amber-400 uppercase text-xs tracking-widest">Storage Bottleneck</h4>
+                  <p className="mt-1 text-slate-300 text-sm leading-relaxed">
+                    Watch for "High-Performance Inference" demand spikes. HDD shortages are forcing Cloud Providers toward NAND/Enterprise SSDs. Tight supply expected through 2026.
+                  </p>
+                </div>
+                <div className="border-l-2 border-blue-400 pl-4">
+                  <h4 className="font-bold text-blue-400 uppercase text-xs tracking-widest">The Power Choke</h4>
+                  <p className="mt-1 text-slate-300 text-sm leading-relaxed">
+                    If AWS Capex continues to ramp, check regional transformer lead times and ERCOT interconnection queues. "On-site power" (Microgrids/Natural Gas) will be the fastest relief valve.
+                  </p>
+                </div>
+                <div className="border-l-2 border-purple-400 pl-4">
+                  <h4 className="font-bold text-purple-400 uppercase text-xs tracking-widest">Japan Governance</h4>
+                  <p className="mt-1 text-slate-300 text-sm leading-relaxed">
+                    Japan's "Hiroshima Process" is a narrative signal. Monitor Microsoft/Google/AWS subsea cable and cluster investments as indicators of "Governance Safe-Havens."
+                  </p>
+                </div>
+                <div className="border-l-2 border-emerald-400 pl-4">
+                  <h4 className="font-bold text-emerald-400 uppercase text-xs tracking-widest">Refresh Wave</h4>
+                  <p className="mt-1 text-slate-300 text-sm leading-relaxed">
+                    Expect first meaningful server/storage replacement pressure in 2026–2028 (3-5 years post-GenAI boom). This creates a "demand floor" for Copper/Silicon even if growth slows.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Footer Note */}
+        <div className="mt-12 p-4 bg-slate-100 rounded-lg text-xs text-slate-500 italic flex items-center justify-center text-center">
+          Educational visualization based on DOE, IEA, JLL, USGS, and TrendForce 2024-2026 data projections. Not investment advice.
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
